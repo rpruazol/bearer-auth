@@ -1,14 +1,18 @@
 'use strict';
 
 const { users } = require('../models/index.js');
+const bcrypt = require('bcrypt');
 
 async function handleSignup(req, res, next) {
   try {
+    // hashing the password
+    req.body.password = await bcrypt.hash(req.body.password, 10);
     let userRecord = await users.create(req.body);
     const output = {
       user: userRecord,
       token: userRecord.token
     };
+    console.log(userRecord);
     res.status(200).json(output);
   } catch (e) {
     console.error(e);
@@ -17,6 +21,7 @@ async function handleSignup(req, res, next) {
 }
 
 async function handleSignin(req, res, next) {
+  console.log('handleSignin')
   try {
     const user = {
       user: request.user,
