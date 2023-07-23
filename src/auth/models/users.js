@@ -18,17 +18,18 @@ const userSchema = (sequelize, DataTypes) => {
   });
 
   model.beforeCreate(async (user) => {
-    let hashedPass = bcrypt.hash(user.password, 10);
+    let hashedPass = await bcrypt.hash(user.password, 10);
+    
     user.password = hashedPass;
+    console.log('hashedpassword @ signup', hashedPass)
   });
 
   // Basic AUTH: Validating strings (username, password) 
   model.authenticateBasic = async function (username, password) {
-    console.log('authenticate basic')
     const user = await this.findOne({where: { 'username': username }})
-    console.log('User', user)
-    console.log('password', user.dataValues)
-    const valid = await bcrypt.compare(password, user.password)
+    // let hashedPass = await bcrypt.hash(password, 10);
+    console.log('input hashed password first time', password)
+    const valid = await bcrypt.compare(password, user.dataValues.password)
     if (valid) { return user; }
     throw new Error('Invalid User');
   }
@@ -44,7 +45,6 @@ const userSchema = (sequelize, DataTypes) => {
       throw new Error(e.message)
     }
   }
-
   return model;
 }
 
