@@ -12,7 +12,6 @@ let userInfo = {
 
 // Pre-load our database with fake users
 beforeAll(async () => {
-  jest.resetAllMocks()
   await db.sync();
   await users.create(userInfo.admin);
 });
