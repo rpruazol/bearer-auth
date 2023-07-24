@@ -21,15 +21,15 @@ const userSchema = (sequelize, DataTypes) => {
     let hashedPass = await bcrypt.hash(user.password, 10);
     
     user.password = hashedPass;
-    console.log('hashedpassword @ signup', hashedPass)
+    
   });
 
   // Basic AUTH: Validating strings (username, password) 
   model.authenticateBasic = async function (username, password) {
-    const user = await this.findOne({where: { 'username': username }})
-    // let hashedPass = await bcrypt.hash(password, 10);
-    console.log('input hashed password first time', password)
+  
+    const user = await this.findOne({where: { username: username }})
     const valid = await bcrypt.compare(password, user.dataValues.password)
+    console.log('result', valid)
     if (valid) { return user; }
     throw new Error('Invalid User');
   }

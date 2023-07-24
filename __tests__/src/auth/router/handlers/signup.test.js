@@ -1,6 +1,6 @@
 'use strict';
 
-.SECRET = "TEST_SECRET";
+process.env.SECRET = "TEST_SECRET";
 
 const { db } = require('../../../../../src/auth/models');
 const { handleSignup } = require('../../../../../src/auth/router/handlers.js');
@@ -31,6 +31,7 @@ describe('testing the Signup Handler', () => {
     };
 
     await handleSignup(req, res, next);
+    
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
