@@ -25,6 +25,7 @@ async function handleSignin(req, res, next) {
   
   try {
     console.log('handleSignin...')
+    console.log(req.user)
     const user = {
       user: req.user,
       token: req.user.token

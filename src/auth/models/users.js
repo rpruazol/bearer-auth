@@ -13,7 +13,10 @@ const userSchema = (sequelize, DataTypes) => {
     token: {
       type: DataTypes.VIRTUAL,
       get() {
-        return jwt.sign({ username: this.username }, SECRET);
+        return jwt.sign({ 
+          username: this.username,
+          exp: Math.floor(Date.now() / 1000) + (60*60) //expires in 1 hour
+        }, SECRET);
       }
     }
   });

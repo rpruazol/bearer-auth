@@ -14,10 +14,12 @@ let userData = {
 let accessToken = null;
 
 beforeAll(async () => {
+  // jest.resetAllMocks()
   await db.sync();
 });
 afterAll(async () => {
   await db.drop();
+  await db.close();
 });
 
 describe('Auth Router', () => {
