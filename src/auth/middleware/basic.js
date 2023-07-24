@@ -1,17 +1,19 @@
 'use strict';
 
 const base64 = require('base-64');
-const { user } = require('../models/index.js');
+const { users } = require('../models/index.js');
 
-module.exports = async (req, res, next) => {
-
-  if (!req.headers.authorization) { return _authError(); }
-
-  let basic = req.headers.authorization;
-  let [username, pass] = base64.decode(basic).split(':');
-
+const basic = async (req, res, next) => {
+  if (!req.headers.authorization) { return next('Not authorized, no token present'); }
+  
+  let basic = req.headers.authorization.split(' ');
+  
+  let decodedString = base64.decode(basic[1]);
+  let [username, password] = decodedString.split(':')
+  console.log('basic creds', [username, password])
   try {
-    req.user = await user.authenticateBasic(username, pass)
+    req.user = await users.authenticateBasic(username, password)
+    console.log(req.user)
     next();
   } catch (e) {
     console.error(e);
@@ -19,4 +21,6 @@ module.exports = async (req, res, next) => {
   }
 
 }
+
+module.exports = basic;
 

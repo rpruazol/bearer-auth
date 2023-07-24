@@ -1,6 +1,6 @@
 'use strict';
 
-.SECRET = "TEST_SECRET";
+process.env.SECRET = "TEST_SECRET";
 
 const { db } = require('../../../../../src/auth/models');
 const { handleSignup } = require('../../../../../src/auth/router/handlers.js');
@@ -10,6 +10,7 @@ beforeAll(async () => {
 });
 afterAll(async () => {
   await db.drop();
+  // await db.close();
 });
 
 describe('testing the Signup Handler', () => {
@@ -21,7 +22,7 @@ describe('testing the Signup Handler', () => {
   };
   const next = jest.fn();
 
-  test('Should respons with a new user if a Username and Password is present on the request', async () => {
+  test('Should respond with a new user if a Username and Password is present on the request', async () => {
 
     let req = {
       body: {
@@ -31,6 +32,7 @@ describe('testing the Signup Handler', () => {
     };
 
     await handleSignup(req, res, next);
+    
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({

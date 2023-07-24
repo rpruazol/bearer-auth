@@ -17,7 +17,6 @@ const DATABASE_CONFIG = process.env.NODE_ENV === 'production' ? {
 } : {};
 
 const sequelize = new Sequelize(DATABASE_URL, DATABASE_CONFIG);
-
 module.exports = {
   db: sequelize,
   users: userSchema(sequelize, DataTypes),

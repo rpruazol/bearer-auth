@@ -11,6 +11,7 @@ beforeAll(async () => {
 });
 afterAll(async () => {
   await db.drop();
+  await db.close();
 });
 
 describe('Testing the signin handler', () => {

@@ -14,10 +14,12 @@ let userData = {
 let accessToken = null;
 
 beforeAll(async () => {
+  // jest.resetAllMocks()
   await db.sync();
 });
 afterAll(async () => {
   await db.drop();
+  await db.close();
 });
 
 describe('Auth Router', () => {
@@ -36,8 +38,9 @@ describe('Auth Router', () => {
   it('Can signin with basic auth string', async () => {
     let { username, password } = userData.testUser;
 
+    console.log('test input>>', username, password)
     const response = await mockRequest.post('/signin')
-      .auth(username, password);
+      .auth(username, password); // why is this failing
 
     const userObject = response.body;
     expect(response.status).toBe(200);
